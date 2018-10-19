@@ -43,16 +43,22 @@ for L in range(1,21):
     y_train.append(RMS_train)
     y_test.append(RMS_test)
 
-# plt.plot(x_plot, y_train)
-# plt.plot(x_plot, y_test)
+plt.subplot(2, 1, 1)
+plt.title('RMS')
+plt.xticks(x_plot)
+plt.plot(x_plot, y_train)
+plt.plot(x_plot, y_test)
 # plt.show()
 
-phi_train = basis_functions(x, 15)
+phi_train = basis_functions(x, 14)
 w = np.linalg.solve(phi_train.T.dot(phi_train), phi_train.T.dot(t))
 pred_train = phi_train.dot(w)
-phi_test = basis_functions(test_x, 15)
+phi_test = basis_functions(test_x, 14)
 pred_test = phi_test.dot(w)
 
+
+plt.subplot(2, 1, 2)
+plt.title('Best Fit')
 plt.scatter(x, t, c='red')
 plt.scatter(test_x,test_t, c='green')
 plt.plot(x, pred_train)
