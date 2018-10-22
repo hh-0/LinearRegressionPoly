@@ -16,6 +16,9 @@ t_test = test_set[:,1].reshape((-1,1))
 
 
 def basis_functions(X, L):
+    # M = np.linspace(0,60, L)
+    M = np.linspace(0,np.max(X), L)
+    s = M[1] - M[0]
     w = np.empty(L)
     for x in X:
         p = np.empty(L)
@@ -24,14 +27,10 @@ def basis_functions(X, L):
         w = np.vstack((w, p))
     return w[1:]
 
-
-
 x_plot = list(range(5,30,5))
 y_train = []
 y_test = []
 for L in range(5,30, 5):
-    M = np.linspace(0,60, L)
-    s = M[1] - M[0]
     phi_train = basis_functions(x_train, L)
     w = np.linalg.solve(phi_train.T.dot(phi_train), phi_train.T.dot(t_train))
 
@@ -54,7 +53,7 @@ plt.plot(x_plot, y_test)
 # plt.show()
 
 L_best = 10
-M = np.linspace(0,60, L_best)
+M = np.linspace(0,np.max(x_train), L_best)
 s = M[1] - M[0]
 
 phi_train = basis_functions(x_train, L_best)
