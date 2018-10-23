@@ -10,9 +10,7 @@ test_set = data[1::2]
 def basis_functions(X, L):
     w = np.empty(L+1)
     for x in X:
-        p = np.empty(L+1)
-        for order in range(L+1):
-            p[order] = x ** (order)
+        p = [x ** (order) for order in range(L+1)]
         w = np.vstack((w, p))
     return w[1:]
 
@@ -21,13 +19,11 @@ t_train = train_set[:,1]
 t_train = t_train.reshape((-1,1))
 test_x = test_set[:,0]
 test_t = test_set[:,1].reshape((-1,1))
-# z = np.polyfit(x_train, t_train, 3)
 
 x_plot = list(range(1,21))
 y_train = []
 y_test = []
 for L in range(1,21):
-
     phi_train = basis_functions(x_train, L)
     w = np.linalg.solve(phi_train.T.dot(phi_train), phi_train.T.dot(t_train))
 
@@ -46,9 +42,9 @@ for L in range(1,21):
 plt.subplot(2, 1, 1)
 plt.title('RMS')
 plt.xticks(x_plot)
-plt.plot(x_plot, y_train)
-plt.plot(x_plot, y_test)
-# plt.show()
+plt.plot(x_plot, y_train, label='Training')
+plt.plot(x_plot, y_test, label='Testing')
+plt.legend()
 
 phi_train = basis_functions(x_train, 14)
 w = np.linalg.solve(phi_train.T.dot(phi_train), phi_train.T.dot(t_train))
@@ -56,11 +52,11 @@ pred_train = phi_train.dot(w)
 phi_test = basis_functions(test_x, 14)
 pred_test = phi_test.dot(w)
 
-
 plt.subplot(2, 1, 2)
 plt.title('Best Fit')
-plt.scatter(x_train, t_train, c='red')
-plt.scatter(test_x,test_t, c='green')
-plt.plot(x_train, pred_train)
-plt.plot(test_x, pred_test, c='purple')
+plt.scatter(x_train, t_train, c='black', label='Training Data')
+plt.scatter(test_x,test_t, c='green', label ='Testing Data')
+plt.plot(x_train, pred_train, label='Training Best Fit')
+plt.plot(test_x, pred_test, c='red', label='Testing Best Fit')
+plt.legend()
 plt.show()
