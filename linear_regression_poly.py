@@ -23,6 +23,8 @@ test_t = test_set[:,1].reshape((-1,1))
 x_plot = list(range(1,21))
 y_train = []
 y_test = []
+lowest = 1000
+L_lowest = 1
 for L in range(1,21):
     phi_train = basis_functions(x_train, L)
     w = np.linalg.solve(phi_train.T.dot(phi_train), phi_train.T.dot(t_train))
@@ -35,6 +37,10 @@ for L in range(1,21):
     E_test = test_t - phi_test.dot(w)
     E_test = E_test ** 2
     RMS_test = np.sqrt(E_test.sum()/test_x.shape[0])
+
+    if RMS_test < lowest:
+        lowest = RMS_test
+        L_lowest = L
 
     y_train.append(RMS_train)
     y_test.append(RMS_test)
